@@ -15,12 +15,28 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         title = selectedFlag
+        
+//
         navigationItem.largeTitleDisplayMode = .never
+        
+//        code here to display share button at top right
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
         if let flagToDisplay = selectedFlag {
             flagView.image = UIImage(named: flagToDisplay)
         }
         // Do any additional setup after loading the view.
+    }
+    
+    @objc func shareTapped() {
+        guard let flag = flagView.image?.pngData() else {
+            print("nothing to save here")
+            return
+        }
+        
+        let vc = UIActivityViewController(activityItems: [flag], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
     }
     
 
